@@ -1,0 +1,120 @@
+\documentclass[oneside,14pt,a4paper]{extbook}
+\usepackage{multicol}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+
+%%% Поля и разметка страницы %%%
+\usepackage{geometry}
+\geometry{a4paper,top=2.0cm,bottom=2.0cm,left=2.5cm,right=1cm}
+
+%%% Математические пакеты %%%
+\usepackage{amsfonts,amsmath,amssymb,amsthm,mathtools}
+
+%%% Оформление абзацев %%%
+\usepackage{indentfirst}
+
+%%% Цвета %%%
+\usepackage{colortbl}
+
+%%% Таблицы %%%
+\usepackage{longtable}
+\usepackage{multirow,makecell,array}
+\usepackage{booktabs}
+
+%%% Общее форматирование
+\usepackage{soul}
+
+%%% Гиперссылки %%%
+\usepackage[linktocpage=true,plainpages=false,pdfpagelabels=false,colorlinks=true,urlcolor=black]{hyperref}
+\hypersetup{
+    colorlinks, linkcolor={black},
+    citecolor={black}, urlcolor={black}
+}
+
+%%% Изображения %%%
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+\usetikzlibrary{arrows,calc,fit,decorations.markings,positioning,shapes.geometric,shadows,trees,arrows.meta}
+
+%%% Алгоритмы %%%
+\usepackage{algorithm,algpseudocode}
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+
+%%% Оформление кода %%%
+\usepackage{listings}
+
+%%% Расположение объектов %%%
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+%%% Комментарии %%%
+\usepackage{comment}
+
+%%% Доп. пакеты %%%
+\usepackage{microtype}
+\usepackage{relsize}
+\usepackage[all]{xy}
+\usepackage{pdfpages}
+\usepackage{mdframed}
+
+%%% Заголовки %%%
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\LARGE\bfseries}
+  {\chaptertitlename\ \thechapter}{20pt}{\LARGE}
+\titleformat{\section}
+  {\Large\bfseries}
+  {\thesection}{1em}{}
+
+%%% Библиография (ГОСТ) %%%
+\usepackage[style=gost-numeric]{biblatex}
+\addbibresource{chapters/literature-review.bib}
+
+%%% Стили страницы %%%
+\makeatletter
+\renewcommand{\@evenhead}{\vbox{\hbox to \textwidth {\hfil\thepage\hfil}}}
+\renewcommand{\@oddhead}{\vbox{\hbox to \textwidth {\hfil\thepage\hfil}}}
+\makeatother
+\sloppy
+\clubpenalty=10000
+\widowpenalty=10000
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\makeatother
+
+%%% Теоремы %%%
+\newtheorem{theorem}{Теорема}[chapter]
+\newtheorem{definition}{Определение}[chapter]
+\newtheorem{remark}{Замечание}[chapter]
+\newtheorem{lemma}{Лемма}[chapter]
+
+%%% Интервалы %%%
+\linespread{1.3}
+\parindent=1.25cm
+
+%%% Todonotes %%%
+\usepackage[colorinlistoftodos,textwidth=4cm,shadow]{todonotes}
+
+\begin{document}
+
+\tableofcontents
+
+\addcontentsline{toc}{chapter}{Введение}
+\input{chapters/introduction.tex}
+
+\input{chapters/literature-review.tex}
+
+\input{chapters/gigachat.tex}
+
+\input{chapters/gigaembeddings.tex}
+
+\clearpage
+\addcontentsline{toc}{chapter}{Список литературы}
+\printbibliography
+
+\end{document}

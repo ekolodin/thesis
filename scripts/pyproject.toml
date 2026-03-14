@@ -1,0 +1,9 @@
+[project]
+name = "thesis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "unstructured[csv,docx,md,pdf]>=0.21.5",
+]

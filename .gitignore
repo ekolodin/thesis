@@ -1,3 +1,14 @@
+## Output PDF
+main.pdf
+
+## OS files
+.DS_Store
+
+## Python / venv
+.venv/
+__pycache__/
+*.pyc
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
