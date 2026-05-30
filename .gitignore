@@ -4,6 +4,15 @@ main.pdf
 ## OS files
 .DS_Store
 
+## Editor / tooling configs
+.cursor/
+.vscode/
+
+## Research material (not thesis source)
+*.pdf
+data/
+production_safety_system_plan_ru.md
+
 ## Python / venv
 .venv/
 __pycache__/

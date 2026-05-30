@@ -1,0 +1,51 @@
+\begin{tikzpicture}[
+    font=\sffamily,
+    node distance=1.1cm and 1.8cm,
+    box/.style={
+        draw,
+        rounded corners,
+        minimum width=3.2cm,
+        minimum height=1.1cm,
+        align=center,
+        thick
+    },
+    big/.style={
+        draw,
+        rounded corners,
+        minimum width=4.0cm,
+        minimum height=1.4cm,
+        align=center,
+        very thick
+    },
+    small/.style={
+        draw,
+        rounded corners,
+        minimum width=2.7cm,
+        minimum height=1.0cm,
+        align=center,
+        thick
+    },
+    arr/.style={-{Stealth[length=3mm]}, thick}
+]
+    %% Вход
+    \node[box] (req) {Запрос +\\ответ модели};
+    %% Этап 1
+    \node[big, right=of req] (clf) {Этап~1:\\потоковый\\MoE-классификатор\\(GigaChat-10B)};
+    %% Три зоны решения
+    \node[small, right=2.2cm of clf] (pass) {pass\\(стриминг)};
+    \node[small, above=of pass] (monitor) {monitor\\(аудит)};
+    \node[small, below=of pass] (block) {block};
+    %% Этап 2
+    \node[big, below=1.1cm of block] (safe) {Этап~2:\\безопасная модель\\(RLHF, safe-search)};
+    %% Очередь аудита
+    \node[small, above=1.0cm of monitor] (audit) {Офлайн-аудит\\и дообучение};
+
+    %% Стрелки
+    \draw[arr] (req) -- (clf);
+    \draw[arr] (clf) -- node[above, font=\small] {$\bar p < \tau_{m}$} (pass);
+    \draw[arr] (clf) -- node[left, font=\small, pos=0.6] {$\tau_{m}\le\bar p\le\tau_{b}$} (monitor);
+    \draw[arr] (clf) -- node[left, font=\small, pos=0.6] {$\bar p > \tau_{b}$} (block);
+    \draw[arr] (monitor) -- (audit);
+    \draw[arr] (block) -- (safe);
+    \draw[arr] (audit) to[bend right=35] (clf);
+\end{tikzpicture}

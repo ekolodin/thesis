@@ -1,0 +1,52 @@
+\begin{tikzpicture}[
+    font=\sffamily,
+    node distance=1.2cm and 1.9cm,
+    box/.style={
+        draw,
+        rounded corners,
+        minimum width=3.0cm,
+        minimum height=1.1cm,
+        align=center,
+        thick
+    },
+    db/.style={
+        draw,
+        cylinder,
+        shape border rotate=90,
+        aspect=0.3,
+        minimum width=2.0cm,
+        minimum height=1.4cm,
+        align=center,
+        thick
+    },
+    fuse/.style={
+        draw,
+        diamond,
+        aspect=2,
+        minimum width=3.0cm,
+        align=center,
+        thick
+    },
+    arr/.style={-{Stealth[length=3mm]}, thick}
+]
+    %% Запрос
+    \node[box] (query) {Запрос};
+    %% Две ветви поиска
+    \node[box, above right=0.6cm and 2.0cm of query] (sparse) {Лексический поиск\\BM25};
+    \node[box, below right=0.6cm and 2.0cm of query] (dense) {Плотный поиск\\(GigaEmbeddings)};
+    \node[db, above=of sparse] (invindex) {Инвертир.\\индекс};
+    \node[db, below=of dense] (vecindex) {Векторный\\индекс};
+    %% Слияние
+    \node[fuse] (rrf) at ($(sparse)!0.5!(dense) + (3.4cm,0)$) {Слияние\\рангов (RRF)};
+    %% Результат
+    \node[box, right=of rrf] (topk) {Top-$k$\\документов};
+
+    %% Стрелки
+    \draw[arr] (query) -- (sparse);
+    \draw[arr] (query) -- (dense);
+    \draw[arr] (invindex) -- (sparse);
+    \draw[arr] (vecindex) -- (dense);
+    \draw[arr] (sparse) -- (rrf);
+    \draw[arr] (dense) -- (rrf);
+    \draw[arr] (rrf) -- (topk);
+\end{tikzpicture}
