@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "statusMessage": "Cleaning LaTeX aux files",
+            "command": "cmd=$(jq -r '.tool_input.command // empty'); printf '%s' \"$cmd\" | grep -Eq '\\b(pdflatex|xelatex|lualatex|latexmk)\\b' && ! printf '%s' \"$cmd\" | grep -Eq '\\blatexmk\\b[^|;&]*[[:space:]]-[a-zA-Z]*[cC]\\b' && (cd /Users/ekolodin/Documents/thesis && /Users/ekolodin/Library/TinyTeX/bin/universal-darwin/latexmk -c main.tex >/dev/null 2>&1); true"
+          }
+        ]
+      }
+    ]
+  }
+}
