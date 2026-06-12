@@ -7,7 +7,7 @@
 
 %%% Поля и разметка страницы %%%
 \usepackage{geometry}
-\geometry{a4paper,top=2.0cm,bottom=2.0cm,left=2.5cm,right=1cm}
+\geometry{a4paper,top=2.0cm,bottom=2.0cm,left=3.0cm,right=1cm}
 
 %%% Математические пакеты %%%
 \usepackage{amsfonts,amsmath,amssymb,amsthm,mathtools}
@@ -65,21 +65,36 @@
 %%% Заголовки %%%
 \usepackage{titlesec}
 \titleformat{\chapter}[display]
-  {\LARGE\bfseries}
+  {\LARGE\bfseries\filcenter}
   {\chaptertitlename\ \thechapter}{20pt}{\LARGE}
 \titleformat{\section}
-  {\Large\bfseries}
+  {\Large\bfseries\filcenter}
   {\thesection}{1em}{}
 
 %%% Библиография (ГОСТ) %%%
 \usepackage[style=gost-numeric]{biblatex}
 \addbibresource{chapters/literature-review.bib}
 
-%%% Стили страницы %%%
+%%% Полуторный интервал и оформление подписей по ГОСТ Р 7.0.11 %%%
+\usepackage{setspace}
+\DeclareCaptionLabelSeparator{gostdash}{~--- }
+\captionsetup{labelsep=gostdash}
+\addto\captionsrussian{%
+  \renewcommand{\figurename}{Рисунок}%
+  \renewcommand{\tablename}{Таблица}%
+  \renewcommand{\contentsname}{Оглавление}%
+}
+
+%%% Стили страницы: номер по середине верхнего поля на всех страницах,
+%%% включая первые страницы глав (ГОСТ Р 7.0.11, 5.3.8) %%%
 \makeatletter
-\renewcommand{\@evenhead}{\vbox{\hbox to \textwidth {\hfil\thepage\hfil}}}
-\renewcommand{\@oddhead}{\vbox{\hbox to \textwidth {\hfil\thepage\hfil}}}
+\def\ps@gost{%
+  \let\@mkboth\@gobbletwo
+  \def\@oddhead{\hfil\thepage\hfil}\def\@evenhead{\hfil\thepage\hfil}%
+  \def\@oddfoot{}\def\@evenfoot{}}
+\let\ps@plain\ps@gost
 \makeatother
+\pagestyle{gost}
 \sloppy
 \clubpenalty=10000
 \widowpenalty=10000
@@ -93,14 +108,16 @@
 \newtheorem{remark}{Замечание}[chapter]
 \newtheorem{lemma}{Лемма}[chapter]
 
-%%% Интервалы %%%
-\linespread{1.3}
+%%% Интервалы (полуторный, ГОСТ Р 7.0.11, 5.3.6) %%%
+\onehalfspacing
 \parindent=1.25cm
 
 %%% Todonotes %%%
 \usepackage[colorinlistoftodos,textwidth=4cm,shadow]{todonotes}
 
 \begin{document}
+
+\input{chapters/titlepage.tex}
 
 \tableofcontents
 
@@ -120,6 +137,8 @@
 \input{chapters/safety-pipeline.tex}
 
 \input{chapters/conclusion.tex}
+
+\input{chapters/abbreviations.tex}
 
 \clearpage
 \addcontentsline{toc}{chapter}{Список литературы}
