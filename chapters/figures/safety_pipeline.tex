@@ -31,21 +31,19 @@
     \node[box] (req) {Запрос +\\ответ модели};
     %% Этап 1
     \node[big, right=of req] (clf) {Этап~1:\\потоковый\\MoE-классификатор\\(GigaChat-10B)};
-    %% Три зоны решения
+    %% Два исхода решения (единый порог)
     \node[small, right=2.2cm of clf] (pass) {pass\\(стриминг)};
-    \node[small, above=of pass] (monitor) {monitor\\(аудит)};
-    \node[small, below=of pass] (block) {block};
+    \node[small, below=1.3cm of pass] (block) {block};
     %% Этап 2
     \node[big, below=1.1cm of block] (safe) {Этап~2:\\безопасная модель\\(RLHF, safe-search)};
     %% Очередь аудита
-    \node[small, above=1.0cm of monitor] (audit) {Офлайн-аудит\\и дообучение};
+    \node[small, above=1.3cm of pass] (audit) {Офлайн-аудит\\и дообучение};
 
     %% Стрелки
     \draw[arr] (req) -- (clf);
-    \draw[arr] (clf) -- node[above, font=\small] {$\bar p < \tau_{m}$} (pass);
-    \draw[arr] (clf) -- node[left, font=\small, pos=0.6] {$\tau_{m}\le\bar p\le\tau_{b}$} (monitor);
-    \draw[arr] (clf) -- node[left, font=\small, pos=0.6] {$\bar p > \tau_{b}$} (block);
-    \draw[arr] (monitor) -- (audit);
+    \draw[arr] (clf) -- node[above, font=\small] {$\bar p \le \tau_{c}$} (pass);
+    \draw[arr] (clf) -- node[left, font=\small, pos=0.6] {$\bar p > \tau_{c}$} (block);
     \draw[arr] (block) -- (safe);
+    \draw[arr] (block.east) to[bend right=45] node[right, font=\small, pos=0.5] {аудит} (audit.east);
     \draw[arr] (audit) to[bend right=35] (clf);
 \end{tikzpicture}
