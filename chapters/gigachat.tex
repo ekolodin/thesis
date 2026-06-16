@@ -84,12 +84,35 @@
 
 Результаты сравнения токенизаторов по среднему отношению символов на токен в различных доменах представлены в Таблице~\ref{tab:gc_tokenizer}. Токенизаторы GigaChat демонстрируют наилучшие средние показатели, превосходя токенизаторы GPT-4o, LLaMA~3, Qwen2 и других моделей.
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=\textwidth]{data/gigachat-family-efficient-russian-language-modeling-through-mixture-of-experts-architecture/table-14-8.jpg}
-    \caption{Сравнение токенизаторов по отношению символов на токен в различных доменах. Токенизаторы \texttt{giga\_tokenizer} представляют варианты из экспериментов GigaChat.}
+    \caption{Сравнение токенизаторов по отношению числа символов на токен. Токенизаторы \texttt{giga\_tokenizer} представляют варианты из экспериментов GigaChat.}
     \label{tab:gc_tokenizer}
-\end{figure}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{ccccccccc}
+        \toprule
+        \multirow{3}{*}{\textbf{Токенизатор}} & \multicolumn{3}{c}{\textbf{Код}} & \multirow{3}{*}{\textbf{ArXiv}} & \multicolumn{3}{c}{\textbf{Wiki}} & \multirow{3}{*}{\makecell{\textbf{Средний}\\\textbf{балл}}} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){6-8}
+          & C & Java & C\# &  & Ru & Ar & En &  \\
+        \midrule
+        giga\_tokenizer\_1 & 3.57 & 4.15 & 4.62 & \textbf{3.61} & \underline{4.18} & \underline{3.34} & 4.47 & \textbf{3.99} \\
+        giga\_tokenizer\_2 & 3.56 & 4.14 & 4.60 & \textbf{3.61} & 4.14 & 3.30 & 4.44 & \underline{3.97} \\
+        gpt-4o            & \underline{3.74} & 4.43 & 4.88 & 3.39 & 3.40 & 3.07 & \textbf{4.68} & 3.94 \\
+        giga\_tokenizer\_5 & 3.39 & 3.97 & 4.44 & \underline{3.54} & \textbf{4.20} & \textbf{3.50} & 4.43 & 3.92 \\
+        giga\_tokenizer\_3 & 3.51 & 4.11 & 4.59 & \underline{3.54} & 4.04 & 3.25 & 4.35 & 3.91 \\
+        giga\_tokenizer\_4 & 3.50 & 4.11 & 4.58 & 3.53 & 4.00 & 3.21 & 4.33 & 3.90 \\
+        llama-3           & \textbf{3.75} & \underline{4.54} & \textbf{4.99} & 3.38 & 3.02 & 2.60 & 4.62 & 3.85 \\
+        mistral-nemo      & 3.38 & 4.06 & 4.50 & 3.49 & 3.18 & 3.24 & 4.51 & 3.76 \\
+        qwen2             & 3.69 & 4.52 & 4.95 & 3.31 & 2.70 & 2.56 & 4.50 & 3.75 \\
+        gpt-4             & \underline{3.74} & \textbf{4.55} & \underline{4.98} & 3.38 & 2.04 & 1.44 & \underline{4.62} & 3.54 \\
+        nemotron-4-256k   & 2.82 & 3.34 & 3.76 & 3.25 & 3.20 & 2.93 & 4.57 & 3.41 \\
+        deepseek-coder-v2 & 2.95 & 3.51 & 3.92 & 3.35 & 2.39 & 1.11 & 4.42 & 3.10 \\
+        deepseek-v2       & 2.95 & 3.51 & 3.92 & 3.35 & 2.39 & 1.11 & 4.42 & 3.10 \\
+        mistral-large     & 2.75 & 3.26 & 3.64 & 3.14 & 2.46 & 1.13 & 4.04 & 2.92 \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}
 
 %% =================================================================
 \section{Данные для предобучения}\label{sec:gc_pretrain_data}
@@ -97,12 +120,21 @@
 
 Предобучающий корпус сформирован из разнообразных текстовых источников с обеспечением баланса между лингвистическим богатством, доменно-специфичными знаниями и качеством данных. Статистика данных представлена в Таблице~\ref{tab:gc_pretrain_data}.
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{data/gigachat-family-efficient-russian-language-modeling-through-mixture-of-experts-architecture/table-5-3.jpg}
     \caption{Статистика предобучающих данных по источникам.}
     \label{tab:gc_pretrain_data}
-\end{figure}
+    \begin{tabular}{lcc}
+        \toprule
+        Источник данных & Уникальных токенов & Просмотрено токенов \\
+        \midrule
+        Веб                          & 4.4T & 5.6T \\
+        Высококачественные источники & 630B & 1.3T \\
+        Программный код              & 230B & 1.3T \\
+        Синтетические данные         & 9B   & 81B  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \textbf{Веб-данные.} Корпус высококачественных веб-данных сформирован на основе дампов Common Crawl за 2017--2023~гг. с использованием легковесного классификатора для извлечения многоязычных текстов на русском, английском, казахском, узбекском, португальском и арабском языках. Тексты дополнительно классифицированы с помощью LLM и специализированных моделей для идентификации образовательного и высокоинформативного контента, что позволило получить 4.4T уникальных токенов. Датасет преимущественно англоязычный (63.76\%) и русскоязычный (26.49\%).
 
@@ -136,19 +168,42 @@
 
 Пост-обучение модели GigaChat-A3B-instruct включает приблизительно 250 тысяч примеров. Распределение по доменам представлено в Таблице~\ref{tab:gc_sft_data}. Гиперпараметры дообучения представлены в Таблице~\ref{tab:gc_sft_hp}.
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{data/gigachat-family-efficient-russian-language-modeling-through-mixture-of-experts-architecture/table-5-4.jpg}
     \caption{Распределение доменов инструкций в данных дообучения GigaChat-A3B-instruct.}
     \label{tab:gc_sft_data}
-\end{figure}
+    \begin{tabular}{lc}
+        \toprule
+        Домен & Доля \\
+        \midrule
+        диалоги                   & 10\% \\
+        длинный контекст (книги)  & 4\%  \\
+        программный код           & 4\%  \\
+        наука                     & 16\% \\
+        общие знания о мире (веб) & 34\% \\
+        переводы                  & 1\%  \\
+        редактирование текста     & 12\% \\
+        бизнес-специфика          & 3\%  \\
+        вызовы функций / API      & 16\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=\textwidth]{data/gigachat-family-efficient-russian-language-modeling-through-mixture-of-experts-architecture/table-5-2.jpg}
     \caption{Гиперпараметры дообучения моделей GigaChat.}
     \label{tab:gc_sft_hp}
-\end{figure}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{lllll}
+        \toprule
+        Модель & Оптимизатор & Планировщик & Параметры планировщика & Гиперпараметры \\
+        \midrule
+        GigaChat-A3B-instruct     & AdamW & постоянный & пользовательское снижение              & --- \\
+        GigaChat-A3B-instruct~1.5 & AdamW & косинусный & разогрев: 200 шагов, макс. 7900 шагов  & betas (0.9, 0.95), eps: 1.0e-8 \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}
 
 \subsection{Оптимизация прямых предпочтений}\label{subsec:gc_dpo}
 
@@ -170,12 +225,33 @@
 
 Отмечаются разрывы в математических ($-14\%$ GSM8K, $-34\%$ MATH) и программистских ($-46\%$ MBPP, $-55\%$ HumanEval) задачах, отражающие параметрические ограничения, при превосходстве в рассуждениях ($+15\%$ RUBQ, $+12\%$ WINOGRANDE) и сохранении конкурентоспособности на MMLU ($-5\%$ до $-8\%$). Модели GigaChat~2~MAX и GigaChat~2~Pro демонстрируют лучшие результаты на всех бенчмарках, лишь незначительно уступая на CyberMetric ($-5\%$).
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=\textwidth]{data/gigachat-family-efficient-russian-language-modeling-through-mixture-of-experts-architecture/table-6-5.jpg}
     \caption{Сравнение моделей на русско- и англоязычных бенчмарках. Лучший результат в каждом столбце выделен жирным, лучший результат в том же размерном классе подчёркнут.}
     \label{tab:gc_benchmarks}
-\end{figure}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{l|l|lllll|ll}
+        \toprule
+        \textbf{Бенчмарк} & \textbf{Примеров} & \thead{GigaChat-\\A3B-instruct} & \thead{GigaChat-A3B\\-instruct 1.5} & \textbf{Qwen 2.5} & \textbf{T Lite} & \textbf{Llama 3.1} & \textbf{GigaChat2 Pro} & \textbf{GigaChat2 MAX} \\
+        \midrule
+        GSM8K & 5 & 0.764 & 0.774 & \underline{0.895} & 0.882 & 0.789 & 0.95 & \textbf{0.956}\\
+        MATH & 4 & 0.462 & 0.393 & \underline{0.704} & 0.592 & 0.329 & 0.752 & \textbf{0.773}\\
+        \midrule
+        HumanEval & 0 & 0.329 & 0.378 & \underline{0.854} & 0.799 & 0.683 & \textbf{0.915} & 0.871\\
+        MBPP & 0 & 0.385 & 0.441 & \underline{0.820} & 0.759 & 0.725 & 0.862 & \textbf{0.894} \\
+        \midrule
+        MMLU EN & 5 & 0.648 & 0.650 & \underline{0.710} & 0.718 & 0.682 & 0.821 & \textbf{0.86} \\
+        MMLU RU & 5 & 0.598 & 0.600 & \underline{0.632} & 0.626 & 0.569 & 0.775 & \textbf{0.805} \\
+        MMLU PRO EN & 5 & 0.348 & 0.357 & \underline{0.565} & 0.509 & 0.443 & 0.644 & \textbf{0.667} \\
+        RUBQ & 0 & 0.675 & \underline{0.688} & 0.373 & 0.583 & 0.484 & 0.658 & \textbf{0.723} \\
+        WINOGRANDE & 4 & 0.750 & \underline{0.762} & 0.636 & 0.670 & 0.624 & 0.796 & \textbf{0.832} \\
+        CyberMetric & 0 & 0.798 & 0.791 & 0.787 & \underline{0.883} & 0.796 & \textbf{0.84} & 0.832 \\
+        \midrule
+        IFEval & 0 & 0.411 & 0.433 & \underline{0.819} & 0.730 & 0.812 & 0.837 & \textbf{0.899} \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}
 
 \subsection{Результаты на русскоязычных бенчмарках}\label{subsec:gc_russian}
 
@@ -185,12 +261,49 @@
 
 Относительно датасета ruHHH, оценивающего способность модели определять честное, полезное и безвредное поведение (Honest, Helpful, Harmless), все модели GigaChat демонстрируют наивысшие или близкие к наивысшим результаты в своём классе: GigaChat~2~MAX, GigaChat~2~Pro и GigaChat~2 показывают лучшие или близкие к лучшим результаты по категории Harmless, незначительно уступая лидерам по Honest и Helpful ($-9\%$ до $-4\%$).
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=\textwidth]{data/gigachat-family-efficient-russian-language-modeling-through-mixture-of-experts-architecture/table-6-6.jpg}
     \caption{Результаты на бенчмарке MERA и ruHHH. Описания моделей доступны на странице MERA.}
     \label{tab:gc_mera}
-\end{figure}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{l|c|ccccccc}
+        \toprule
+        \multirow{3}{*}{\textbf{Модель}} & \multirow{3}{*}{\textbf{Итого}} & \multirow{3}{*}{\textbf{RWSD}} & \multirow{3}{*}{\textbf{ruModAr}} & \multirow{3}{*}{\textbf{USE}} & \multirow{3}{*}{\textbf{MaMuRAMu}} & \multicolumn{3}{c}{\textbf{ruHHH}} \\
+        \cmidrule(lr){7-9}
+         & & & & & & \textbf{Честность} & \textbf{Полезность} & \textbf{Безвредность} \\
+        \midrule
+        Человек (эталон) & 0.852 & 0.835 & 0.942 & 0.701 & 0.796 & 0.705 & 0.797 & 0.948 \\
+        \midrule
+        Claude 3.7 Sonnet & \textbf{0.682} & \textbf{0.788} & 0.919 & 0.536 & \textbf{0.89} & 0.82 & \textbf{0.864} & 0.931 \\
+        \textbf{GigaChat 2 MAX} & 0.67 & 0.642 & \textbf{0.963} & \textbf{0.581} & 0.864 & 0.803 & 0.831 & \textbf{0.948} \\
+        Gemini 1.5 Pro & 0.675 & 0.627 & 0.707 & 0.433 & 0.868 & 0.836 & 0.797 & 0.931 \\
+        GPT-4o & 0.642 & 0.496 & 0.729 & 0.457 & 0.874 & \textbf{0.852} & 0.729 & 0.862 \\
+        DeepSeek V3 & 0.677 & 0.612 & 0.718 & 0.499 & 0.882 & 0.803 & 0.763 & 0.793 \\
+        \midrule
+        Phi-3.5-MoE-Inst & 0.487 & 0.465 & 0.464 & 0.199 & 0.726 & 0.656 & 0.644 & 0.81 \\
+        \textbf{GigaChat 2 Pro} & \textbf{0.649} & 0.665 & \textbf{0.943} & \textbf{0.534} & 0.831 & 0.803 & 0.814 & 0.897 \\
+        Mixtral-8x22B-Inst & 0.486 & 0.473 & 0.523 & 0.269 & 0.747 & 0.836 & \textbf{0.881} & \textbf{0.966} \\
+        Qwen2.5-72B-Inst & 0.601 & \textbf{0.715} & 0.665 & 0.32 & 0.849 & \textbf{0.869} & 0.831 & 0.897 \\
+        Llama-3.1-405B-Inst & 0.59 & 0.677 & 0.573 & 0.357 & \textbf{0.868} & 0.803 & 0.864 & 0.759 \\
+        \midrule
+        RuadaptQwen2.5-7B & 0.536 & 0.465 & 0.492 & 0.162 & 0.751 & 0.738 & 0.78 & 0.776 \\
+        \textbf{GigaChat 2} & 0.541 & 0.369 & \textbf{0.854} & \textbf{0.361} & 0.766 & 0.754 & 0.814 & \textbf{0.931} \\
+        T-lite-it-1.0 & 0.552 & 0.535 & 0.493 & 0.147 & 0.775 & 0.689 & 0.797 & 0.862 \\
+        \textbf{GigaChat-A3B-instruct} & 0.512 & 0.535 & 0.853 & 0.325 & 0.728 & 0.689 & 0.78 & 0.759 \\
+        \textbf{GigaChat-A3B-instruct 1.5} & 0.511 & 0.512 & 0.84 & 0.32 & 0.728 & 0.689 & 0.831 & 0.793 \\
+        gemma-3-27b & \textbf{0.567} & \textbf{0.588} & 0.626 & 0.328 & \textbf{0.797} & \textbf{0.82} & \textbf{0.864} & 0.914 \\
+        \midrule
+        gemma-2-9b & \textbf{0.453} & 0.558 & 0.592 & \textbf{0.154} & \textbf{0.689} & 0.574 & 0.627 & 0.552 \\
+        \textbf{GigaChat-A3B-base} & 0.422 & 0.508 & \textbf{0.608} & 0.127 & 0.675 & 0.574 & 0.593 & 0.552 \\
+        Llama-3.2-3B & 0.362 & 0.477 & 0.592 & 0.075 & 0.528 & 0.41 & 0.542 & 0.483 \\
+        Yi-1.5-9B-32K & 0.428 & 0.569 & 0.516 & 0.12 & 0.516 & \textbf{0.59} & \textbf{0.661} & \textbf{0.621} \\
+        Qwen1.5-7B & 0.374 & 0.558 & 0.485 & 0.056 & 0.52 & 0.541 & 0.627 & 0.603 \\
+        Mistral-7B-v0.1 & 0.404 & \textbf{0.581} & 0.517 & 0.107 & 0.585 & 0.574 & 0.559 & 0.552 \\
+        ruGPT-3.5 & 0.213 & 0.462 & 0.001 & 0.082 & 0.226 & 0.459 & 0.475 & 0.483 \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}
 
 %% =================================================================
 \section{Экологическое воздействие}\label{sec:gc_co2}
@@ -205,12 +318,21 @@
 
 Результаты представлены в Таблице~\ref{tab:gc_co2}. 251 тысяча кг CO$_2$ приблизительно эквивалентна 157 трансатлантическим перелётам туда и обратно по маршруту Нью-Йорк --- Лондон (около 1600 кг CO$_2$ на пассажира за такой перелёт).
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{data/gigachat-family-efficient-russian-language-modeling-through-mixture-of-experts-architecture/table-8-7.jpg}
     \caption{Выбросы CO$_2$ от обучения моделей GigaChat.}
     \label{tab:gc_co2}
-\end{figure}
+    \small
+    \begin{tabular}{lc}
+        \toprule
+        \textbf{Модель} & \textbf{CO$_2$ (кг)} \\
+        \midrule
+        GigaChat-A3B-base         & 251k \\
+        GigaChat-A3B-instruct     & 253k \\
+        GigaChat-A3B-instruct 1.5 & 255k \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 %% =================================================================
 \section{Выводы}\label{sec:gc_conclusions}
