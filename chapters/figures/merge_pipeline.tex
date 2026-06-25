@@ -1,0 +1,57 @@
+\begin{tikzpicture}[
+    font=\sffamily,
+    node distance=0.7cm and 1.1cm,
+    ck/.style={
+        draw,
+        rounded corners,
+        minimum width=2.0cm,
+        minimum height=0.9cm,
+        align=center,
+        thick
+    },
+    merge/.style={
+        draw,
+        diamond,
+        aspect=2.2,
+        inner sep=1pt,
+        minimum width=2.0cm,
+        align=center,
+        thick
+    },
+    arr/.style={-{Stealth[length=3mm]}, thick}
+]
+    %% Этап 1: три предобучения
+    \node[ck] (p1) {pretrain 1};
+    \node[ck, below=of p1] (p2) {pretrain 2};
+    \node[ck, below=of p2] (p3) {pretrain 3};
+    %% Слияние 1
+    \node[merge, right=of p2] (m1) {SLERP};
+    %% Этап 3: четыре дообучения
+    \node[ck, right=1.3cm of m1] (f1) {fine-tune 1};
+    \node[ck, below=0.3cm of f1] (f2) {fine-tune 2};
+    \node[ck, below=0.3cm of f2] (f3) {fine-tune 3};
+    \node[ck, below=0.3cm of f3] (f4) {fine-tune 4};
+    %% Слияние 2
+    \node[merge, right=of f2] (m2) at ($(f2)!0.5!(f3) + (2.2cm,0)$) {SLERP};
+    %% Мультизадачное + финальное слияние
+    \node[ck, right=1.1cm of m2] (mt) {multitask};
+    \node[merge, right=of mt] (m3) {SLERP};
+    \node[ck, right=of m3] (out) {v2};
+
+    %% Стрелки
+    \draw[arr] (p1) -- (m1);
+    \draw[arr] (p2) -- (m1);
+    \draw[arr] (p3) -- (m1);
+    \draw[arr] (m1) -- (f1);
+    \draw[arr] (m1) -- (f2);
+    \draw[arr] (m1) -- (f3);
+    \draw[arr] (m1) -- (f4);
+    \draw[arr] (f1) -- (m2);
+    \draw[arr] (f2) -- (m2);
+    \draw[arr] (f3) -- (m2);
+    \draw[arr] (f4) -- (m2);
+    \draw[arr] (m2) -- (mt);
+    \draw[arr] (m2.south) to[out=-40,in=180] (m3.west);
+    \draw[arr] (mt) -- (m3);
+    \draw[arr] (m3) -- (out);
+\end{tikzpicture}
